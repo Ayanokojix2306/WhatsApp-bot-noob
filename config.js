@@ -4,4 +4,4 @@ const config = {
     API_KEY: process.env.API_KEY || 'your_local_api_key', // Example of another config variable
 };
 
-module.exports = config;
+module.exports = mongodbURI;
