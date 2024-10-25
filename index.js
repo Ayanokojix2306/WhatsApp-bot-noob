@@ -1,4 +1,4 @@
-const connectDB = require('../database/mongodb');
+const connectDB = require('../database/mongodb.js');
 const connectToWhatsApp = require('./lib/koji');
 
 // Connect to MongoDB
