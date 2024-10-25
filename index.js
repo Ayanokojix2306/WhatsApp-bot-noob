@@ -1,6 +1,5 @@
 const { default: makeWASocket, DisconnectReason } = require('@whiskeysockets/baileys');
-const { useMultiFileAuthState } = require('@whiskeysockets/baileys'); // Import from the correct path
-// Update this line to match your package
+const { useMultiFileAuthState } = require('@whiskeysockets/baileys');
 const express = require('express');
 const qrcode = require('qrcode-terminal');
 const fs = require('fs');
@@ -9,10 +8,14 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Set up the state for authentication
-const { state, saveCreds } = useMultiFileAuthState('./auth_info_baileys');
+async function initializeAuth() {
+    return await useMultiFileAuthState('./auth_info_baileys');
+}
 
 // Function to connect to WhatsApp
 async function connectToWhatsApp() {
+    const { state, saveCreds } = await initializeAuth(); // Await the auth initialization
+
     const conn = makeWASocket({
         auth: state,
     });
@@ -23,9 +26,8 @@ async function connectToWhatsApp() {
 
         if (qr) {
             // Generate and display the QR code in the terminal
-            qrcode.generate(qr, { small: true }, (qrcode) => {
-                console.log('QR code generated:\n', qrcode);
-            });
+            qrcode.generate(qr, { small: true });
+            currentQrCode = qr; // Update the current QR code variable
         }
 
         if (connection === 'close') {
@@ -37,13 +39,13 @@ async function connectToWhatsApp() {
         }
     });
 
-    conn.ev.on ('creds.update', saveCreds); // Save authentication state
+    conn.ev.on('creds.update', saveCreds); // Save authentication state
 
     conn.ev.on('messages.upsert', async (m) => {
         const message = m.messages[0];
         if (!message.key.fromMe && m.type === 'notify') {
             console.log(`Received message: ${message.message.conversation}`);
-            await sock.sendMessage(message.key.remoteJid, { text: 'Hello! This is my first bot response!' });
+            await conn.sendMessage(message.key.remoteJid, { text: 'Hello! This is my first bot response!' });
         }
     });
 }
@@ -63,7 +65,7 @@ app.get('/', (req, res) => {
                         const response = await fetch('/qr');
                         const qrCodeData = await response.text();
                         document.getElementById('qr-code').src = qrCodeData;
-                    }, 2000); // Check every 2 seconds for a new QR code
+                    }, 6000); // Check every 2 seconds for a new QR code
                 </script>
             </body>
         </html>
