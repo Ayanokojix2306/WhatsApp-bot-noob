@@ -1,4 +1,6 @@
-const { default: makeWASocket, DisconnectReason, useSingleFileAuthState } = require('@whiskeysockets/baileys'); // Update this line to match your package
+const { default: makeWASocket, DisconnectReason } = require('@whiskeysockets/baileys');
+const { useSingleFileAuthState } = require('@whiskeysockets/baileys/lib/Utils'); // Import from the correct path
+// Update this line to match your package
 const express = require('express');
 const qrcode = require('qrcode-terminal');
 const fs = require('fs');
