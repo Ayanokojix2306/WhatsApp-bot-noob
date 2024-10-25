@@ -9,7 +9,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Set up the state for authentication
-const { state, saveState } = useMultiFileAuthState('./auth_info.json');
+const { state, saveCreds } = useMultiFileAuthState('./auth_info_baileys');
 
 // Function to connect to WhatsApp
 async function connectToWhatsApp() {
