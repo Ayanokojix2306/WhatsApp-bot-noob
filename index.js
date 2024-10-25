@@ -1,9 +1,8 @@
-// index.js
 const connectDB = require('./database/mongodb');
-const bot = require('./lib/koji');
+const connectToWhatsApp = require('./lib/koji');
 
 // Connect to MongoDB
 connectDB();
 
 // Start the WhatsApp bot
-bot();
+connectToWhatsApp(); // Correctly invoke the function to start the bot
