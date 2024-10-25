@@ -1,5 +1,5 @@
 const { default: makeWASocket, DisconnectReason } = require('@whiskeysockets/baileys');
-const { useSingleFileAuthState } = require('@whiskeysockets/baileys/lib/Utils'); // Import from the correct path
+const { useMultiFileAuthState } = require('@whiskeysockets/baileys/lib/Utils'); // Import from the correct path
 // Update this line to match your package
 const express = require('express');
 const qrcode = require('qrcode-terminal');
@@ -9,7 +9,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Set up the state for authentication
-const { state, saveState } = useSingleFileAuthState('./auth_info.json');
+const { state, saveState } = useMultiFileAuthState('./auth_info.json');
 
 // Function to connect to WhatsApp
 async function connectToWhatsApp() {
