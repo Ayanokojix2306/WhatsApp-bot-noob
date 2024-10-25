@@ -37,7 +37,7 @@ async function connectToWhatsApp() {
         }
     });
 
-    conn.ev.on('creds.update', saveState); // Save authentication state
+    conn.ev.on ('creds.update', saveCreds); // Save authentication state
 
     conn.ev.on('messages.upsert', async (m) => {
         const message = m.messages[0];
