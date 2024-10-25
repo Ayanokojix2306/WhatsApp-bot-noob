@@ -1,6 +1,7 @@
 const { default: makeWASocket, DisconnectReason } = require('@whiskeysockets/baileys');
 const { useMultiFileAuthState } = require('@whiskeysockets/baileys');
 const express = require('express');
+const connectDB = require('./database/mongodb.js)
 const qrcode = require('qrcode'); // Updated to use qrcode package
 const fs = require('fs');
 
