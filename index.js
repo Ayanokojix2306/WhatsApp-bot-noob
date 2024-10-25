@@ -1,5 +1,5 @@
-const connectDB = require('../database/mongodb');
-const connectToWhatsApp = require('./lib/koji');
+const connectDB = require('../database/mongodb.js'); // Check the path
+const connectToWhatsApp = require('./lib/koji.js');
 
 // Connect to MongoDB
 connectDB();
