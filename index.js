@@ -13,12 +13,12 @@ const { state, saveCreds } = useMultiFileAuthState('./auth_info_baileys');
 
 // Function to connect to WhatsApp
 async function connectToWhatsApp() {
-    const sock = makeWASocket({
+    const conn = makeWASocket({
         auth: state,
     });
 
     // Handle connection updates
-    sock.ev.on('connection.update', async (update) => {
+    conn.ev.on('connection.update', async (update) => {
         const { connection, lastDisconnect, qr } = update;
 
         if (qr) {
@@ -37,9 +37,9 @@ async function connectToWhatsApp() {
         }
     });
 
-    sock.ev.on('creds.update', saveState); // Save authentication state
+    conn.ev.on('creds.update', saveState); // Save authentication state
 
-    sock.ev.on('messages.upsert', async (m) => {
+    conn.ev.on('messages.upsert', async (m) => {
         const message = m.messages[0];
         if (!message.key.fromMe && m.type === 'notify') {
             console.log(`Received message: ${message.message.conversation}`);
