@@ -1,17 +1,27 @@
+// database/newMongoAuthState.js
+const AuthData = require('./hostdata');
+
+// Function to create a new MongoDB auth state
 async function newMongoAuthState() {
-    const get = async (key) => {
-        const data = await AuthData.findOne({ key });
-        return data ? data.credentials : null;
+    const auth = {
+        key: {}, // Initialize key object here
+        credentials: {}, // Initialize credentials object here
     };
 
-    const set = async (key, credentials) => {
-        await AuthData.findOneAndUpdate(
-            { key },
-            { credentials, lastUpdated: Date.now() },
-            { upsert: true }
-        );
-    };
-
-    return { state: { get, set } };
+    // Logic to save to MongoDB
+    const newAuthData = new AuthData(auth);
+    await newAuthData.save();
+    
+    return auth; // Return the auth object
 }
-module.exports = newMongoAuthState
+
+// Function to get the existing MongoDB auth state
+async function getMongoAuthState() {
+    const existingAuthData = await AuthData.findOne(); // Fetch the first document
+    return existingAuthData || {}; // Return the found data or an empty object
+}
+
+module.exports = {
+    newMongoAuthState,
+    getMongoAuthState,
+};
