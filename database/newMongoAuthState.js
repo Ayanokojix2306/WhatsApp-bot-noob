@@ -1,5 +1,5 @@
 // database/newMongoAuthState.js
-const AuthData = require('./database/authdata');
+const AuthData = require('../authdata');
 
 // Function to create a new MongoDB auth state
 async function newMongoAuthState() {
