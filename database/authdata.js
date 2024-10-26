@@ -1,9 +1,21 @@
+// database/hostdata.js
 const mongoose = require('mongoose');
 
-const authDataSchema = new mongoose.Schema({
-    key: { type: String, required: true, unique: true },   // Unique key for each entry
-    credentials: { type: Object, required: true },         // Object to store credentials
-    lastUpdated: { type: Date, default: Date.now },        // Timestamp for updates
+// Define a schema for WhatsApp authentication data
+const authSchema = new mongoose.Schema({
+    key: {
+        // You can adjust the structure based on the authentication data you want to store
+        type: Object,
+        required: true,
+    },
+    credentials: {
+        // This can also be customized depending on the credentials structure
+        type: Object,
+        required: true,
+    },
 });
 
-module.exports = mongoose.model('AuthData', authDataSchema);
+// Create a model for the authentication data
+const AuthData = mongoose.model('AuthData', authSchema);
+
+module.exports = AuthData;
