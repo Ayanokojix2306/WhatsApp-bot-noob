@@ -14,13 +14,15 @@ async function newMongoAuthState() {
         await AuthData.updateOne({}, auth, { upsert: true });
     };
 
+    // Always return the auth state, even if it’s new/empty
     return { state: auth, saveCreds };
 }
 
 // Function to get the existing MongoDB auth state
 async function getMongoAuthState() {
     const existingAuthData = await AuthData.findOne();
-    return existingAuthData ? { state: existingAuthData } : {};
+    console.log('Existing Auth Data:', existingAuthData); // Log the existing auth data
+    return existingAuthData ? { state: existingAuthData } : { state: { creds: {}, keys: {} } }; // Ensure a valid state is returned
 }
 
 module.exports = {
