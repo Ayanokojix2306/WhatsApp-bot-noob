@@ -1,4 +1,3 @@
-// database/hostdata.js
 const mongoose = require('mongoose');
 
 // Define a schema for WhatsApp authentication data
