@@ -1,4 +1,4 @@
-const AuthData = require(__dirname + '/authdata');
+const AuthData = require('./authdata');
 
 // Function to create a new MongoDB auth state
 async function newMongoAuthState() {
@@ -9,19 +9,30 @@ async function newMongoAuthState() {
         keys: {}   // Baileys expects `keys` to handle encryption keys
     };
 
-    // Function to save updated credentials to MongoDB
+    // Define the `saveCreds` function to save the auth state
     const saveCreds = async () => {
-        await AuthData.updateOne({}, auth, { upsert: true });
+        try {
+            await AuthData.updateOne({}, auth, { upsert: true });
+            console.log('Auth credentials saved to MongoDB');
+        } catch (error) {
+            console.error('Error saving credentials to MongoDB:', error);
+        }
     };
 
-    // Returning both the auth state and the saveCreds function
+    // Return both the auth state and saveCreds function as an object
     return { state: auth, saveCreds };
 }
 
 // Function to get the existing MongoDB auth state
 async function getMongoAuthState() {
     const existingAuthData = await AuthData.findOne();
-    return existingAuthData ? { state: existingAuthData } : {};
+    if (existingAuthData) {
+        // Return auth state with `saveCreds` function if data exists
+        return { state: existingAuthData, saveCreds: newMongoAuthState().saveCreds };
+    } else {
+        console.error('No auth data found in MongoDB. Initializing new auth state.');
+        return newMongoAuthState(); // Return a new state if none exists
+    }
 }
 
 module.exports = {
